@@ -1350,6 +1350,7 @@ type OrderItem struct {
 
 	Item *CartItem `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
 	Cost *Money    `protobuf:"bytes,2,opt,name=cost,proto3" json:"cost,omitempty"`
+	GiftWrappingPrice *Money `protobuf:"bytes,3,opt,name=giftwrap,proto3" json:"giftwrap,omitempty"`
 }
 
 func (x *OrderItem) Reset() {
@@ -1394,6 +1395,13 @@ func (x *OrderItem) GetItem() *CartItem {
 func (x *OrderItem) GetCost() *Money {
 	if x != nil {
 		return x.Cost
+	}
+	return nil
+}
+
+func (x *OrderItem) GetGiftWrappingPrice() *Money {
+	if x != nil {
+		return x.GiftWrappingPrice
 	}
 	return nil
 }

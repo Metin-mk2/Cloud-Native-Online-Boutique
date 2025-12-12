@@ -268,6 +268,12 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		log.WithField("error", err).Warn("failed to get product recommendations")
 	}
 
+	// ignores the error retrieving recommendations since it is not critical
+	giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), Quantity(Product), ProductID(product))
+	if err != nil {
+		log.WithField("error", err).Warn("failed to get gift wrapping price")
+	}
+
 	shippingCost, err := fe.getShippingQuote(r.Context(), cart, currentCurrency(r))
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to get shipping quote"), http.StatusInternalServerError)
@@ -278,6 +284,7 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		Item     *pb.Product
 		Quantity int32
 		Price    *pb.Money
+		GiftWrappingApplied bool
 	}
 	items := make([]cartItemView, len(cart))
 	totalPrice := pb.Money{CurrencyCode: currentCurrency(r)}
@@ -379,7 +386,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 
 	totalPaid := *order.GetOrder().GetShippingCost()
 	for _, v := range order.GetOrder().GetItems() {
-		multPrice := money.MultiplySlow(*v.GetCost(), uint32(v.GetItem().GetQuantity()))
+	  itemPrice := *v.GetCost() + *v.GetGiftWrapPrice()
+		multPrice := money.MultiplySlow(itemPrice, uint32(v.GetItem().GetQuantity()))
 		totalPaid = money.Must(money.Sum(totalPaid, multPrice))
 	}
 
