@@ -37,5 +37,5 @@ FROM eclipse-temurin:25.0.1_8-jre-alpine@sha256:b51543f89580c1ba70e441cfbc0cfc16
 WORKDIR /app
 COPY --from=builder /app .
 
-EXPOSE 9555
+EXPOSE 9600
 ENTRYPOINT ["/app/build/install/giftwrappingservice/bin/GiftWrappingService"]
