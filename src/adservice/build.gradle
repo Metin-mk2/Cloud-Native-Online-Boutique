@@ -1,6 +1,6 @@
 plugins {
     id 'com.google.protobuf' version '0.9.5'
-    id 'com.github.sherter.google-java-format' version '0.9'
+    // id 'com.github.sherter.google-java-format' version '0.9'
     id 'idea'
     id 'application'
 }
@@ -66,9 +66,9 @@ protobuf {
     }
 }
 
-googleJavaFormat {
-    toolVersion '1.32.0'
-}
+// googleJavaFormat {
+//     toolVersion '1.22.0'
+// }
 
 // Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
 sourceSets {

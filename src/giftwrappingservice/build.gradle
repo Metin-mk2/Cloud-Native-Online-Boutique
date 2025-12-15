@@ -1,6 +1,6 @@
 plugins {
     id 'com.google.protobuf' version '0.9.5'
-    id 'com.github.sherter.google-java-format' version '0.9'
+
     id 'idea'
     id 'application'
 }
@@ -10,8 +10,8 @@ repositories {
     mavenLocal()
 }
 
-description = 'Ad Service'
-group = "adservice"
+description = 'Gift Wrapping Service'
+group = "giftwrappingservice"
 version = "0.1.0-SNAPSHOT"
 
 def grpcVersion = "1.77.0"
@@ -66,17 +66,15 @@ protobuf {
     }
 }
 
-googleJavaFormat {
-    toolVersion '1.32.0'
-}
+
 
 // Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
 sourceSets {
     main {
         java {
-            srcDirs 'hipstershop'
-            srcDirs 'build/generated/source/proto/main/java/hipstershop'
-            srcDirs 'build/generated/source/proto/main/grpc/hipstershop'
+            srcDirs 'src/main/java'
+            srcDirs 'build/generated/source/proto/main/java'
+            srcDirs 'build/generated/source/proto/main/grpc'
         }
     }
 }
@@ -92,9 +90,9 @@ task downloadRepos(type: Copy) {
     into offlineCompile
 }
 
-task adService(type: CreateStartScripts) {
-    mainClass.set('hipstershop.AdService')
-    applicationName = 'AdService'
+task giftWrappingService(type: CreateStartScripts) {
+    mainClass.set('giftwrappingservice.GiftWrappingService')
+    applicationName = 'GiftWrappingService'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = startScripts.classpath
     // @TODO: https://github.com/GoogleCloudPlatform/microservices-demo/issues/2517
@@ -102,9 +100,9 @@ task adService(type: CreateStartScripts) {
     //          ["-agentpath:/opt/cprof/profiler_java_agent.so=-cprof_service=adservice,-cprof_service_version=1.0.0"]
 }
 
-task adServiceClient(type: CreateStartScripts) {
-    mainClass.set('hipstershop.AdServiceClient')
-    applicationName = 'AdServiceClient'
+task giftWrappingClient(type: CreateStartScripts) {
+    mainClass.set('giftwrappingservice.GiftWrappingService')
+    applicationName = 'GiftWrappingService'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = startScripts.classpath
     // @TODO: https://github.com/GoogleCloudPlatform/microservices-demo/issues/2517
@@ -113,7 +111,7 @@ task adServiceClient(type: CreateStartScripts) {
 }
 
 applicationDistribution.into('bin') {
-    from(adService)
-    from(adServiceClient)
+    from(giftWrappingService)
+    from(giftWrappingClient)
     fileMode = 0755
 }
