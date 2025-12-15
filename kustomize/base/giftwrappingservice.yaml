@@ -15,19 +15,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adservice
+  name: giftwrappingservice
   labels:
-    app: adservice
+    app: giftwrappingservice
 spec:
   selector:
     matchLabels:
-      app: adservice
+      app: giftwrappingservice
+  
   template:
     metadata:
       labels:
-        app: adservice
+        app: giftwrappingservice
+    
     spec:
-      serviceAccountName: adservice
+      serviceAccountName: giftwrappingservice
+  
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -43,7 +46,8 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: adservice
+        image: giftwrappingservice
+    
         ports:
         - containerPort: 9555
         env:
@@ -60,29 +64,31 @@ spec:
           initialDelaySeconds: 20
           periodSeconds: 15
           grpc:
-            port: 9555
+            port: 9600
         livenessProbe:
           initialDelaySeconds: 20
           periodSeconds: 15
           grpc:
-            port: 9555
+            port: 9600
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: adservice
+  name: giftwrappingservice
   labels:
-    app: adservice
+    app: giftwrappingservice
+
 spec:
   type: ClusterIP
   selector:
-    app: adservice
+    app: giftwrappingservice
+
   ports:
   - name: grpc
-    port: 9555
-    targetPort: 9555
+    port: 9600
+    targetPort: 9600
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: adservice
+  name: giftwrappingservice
