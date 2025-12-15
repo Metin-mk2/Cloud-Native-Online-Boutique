@@ -47,6 +47,8 @@ build:
     context: src/frontend
   - image: adservice
     context: src/adservice
+  - image: giftwrappingservice
+    context: src/giftwrappingservice
   tagPolicy:
     gitCommit: {}
   local:
