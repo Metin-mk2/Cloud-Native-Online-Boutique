@@ -132,7 +132,6 @@ public final class GiftWrappingService {
           @Override
               public void getGiftWrapping(GiftWrappingRequest request, StreamObserver<Money> responseObserver) {
               // TODO Auto-generated method stub
-
               //example response
               //Sollte 5€ zurückgeben
               Money giftwrapping = Money.newBuilder()

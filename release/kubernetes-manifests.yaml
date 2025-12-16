@@ -767,7 +767,7 @@ spec:
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
           - name: GIFT_WRAPPING_SERVICE_ADDR
-            value: "adservice:9600"
+            value: "giftwrappingservice:9600"
           - name: SHOPPING_ASSISTANT_SERVICE_ADDR
             value: "shoppingassistantservice:80"
           # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba

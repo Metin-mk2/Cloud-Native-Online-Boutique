@@ -260,3 +260,16 @@ message Ad {
     // short advertisement text to display.
     string text = 2;
 }
+
+// -----------------Gift Wrapping service-----------------
+
+service GiftWrappingService {
+    rpc GetGiftWrapping(GiftWrappingRequest) returns (Money) {}
+}
+
+message GiftWrappingRequest {
+    string context = 1;
+    int32  quantity = 2;
+    string product_id = 3;
+}
+

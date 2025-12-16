@@ -29,7 +29,7 @@ service GiftWrappingService {
 message GiftWrappingRequest {
     string context = 1;
     int32  quantity = 2;
-    int32 product_id = 3;
+    string product_id = 3;
 }
 
 
