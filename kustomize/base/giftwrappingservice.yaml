@@ -22,15 +22,12 @@ spec:
   selector:
     matchLabels:
       app: giftwrappingservice
-  
   template:
     metadata:
       labels:
         app: giftwrappingservice
-    
     spec:
       serviceAccountName: giftwrappingservice
-  
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -46,13 +43,12 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: giftwrappingservice
-    
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/giftwrappingservice:v0.10.4
         ports:
-        - containerPort: 9555
+        - containerPort: 9600
         env:
         - name: PORT
-          value: "9555"
+          value: "9600"
         resources:
           requests:
             cpu: 200m
@@ -77,12 +73,10 @@ metadata:
   name: giftwrappingservice
   labels:
     app: giftwrappingservice
-
 spec:
   type: ClusterIP
   selector:
     app: giftwrappingservice
-
   ports:
   - name: grpc
     port: 9600
