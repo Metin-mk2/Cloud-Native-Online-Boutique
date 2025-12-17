@@ -88,12 +88,3 @@ metadata:
   name: adservice
 
 
-PROJECT_ID=micro-service-gruppe1
-REGION=europe-west3
-REPO=cse-microservice-boutique
-IMAGE=giftwrappingservice
-TAG=v1
-
-docker push \
-  $REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE:$TAG \
-  .
