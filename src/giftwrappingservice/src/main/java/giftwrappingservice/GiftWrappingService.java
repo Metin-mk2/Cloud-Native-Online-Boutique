@@ -130,7 +130,7 @@ public final class GiftWrappingService {
             extends giftwrappingservice.GiftWrappingServiceGrpc.GiftWrappingServiceImplBase {
 
           @Override
-              public void getGiftWrapping(GiftWrappingRequest request, StreamObserver<Money> responseObserver) {
+              public void getGiftWrappingPrice(GiftWrappingPriceRequest request, StreamObserver<Money> responseObserver) {
               // TODO Auto-generated method stub
               //example response
               //Sollte 5€ zurückgeben

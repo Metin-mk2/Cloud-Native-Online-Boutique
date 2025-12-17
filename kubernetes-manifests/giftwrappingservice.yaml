@@ -45,10 +45,10 @@ spec:
           readOnlyRootFilesystem: true
         image: giftwrappingservice
         ports:
-        - containerPort: 9555
+        - containerPort: 9600
         env:
         - name: PORT
-          value: "9555"
+          value: "9600"
         resources:
           requests:
             cpu: 200m

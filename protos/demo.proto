@@ -264,12 +264,12 @@ message Ad {
 // -----------------Gift Wrapping service-----------------
 
 service GiftWrappingService {
-    rpc GetGiftWrapping(GiftWrappingRequest) returns (Money) {}
+    rpc GetGiftWrappingPrice(GiftWrappingPriceRequest) returns (Money) {}
 }
 
-message GiftWrappingRequest {
-    string context = 1;
+message GiftWrappingPriceRequest {
     int32  quantity = 2;
-    string product_id = 3;
+    optional string product_id = 3;
 }
+
 
