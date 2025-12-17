@@ -43,8 +43,8 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: giftwrappingservice
-        imagePullPolicy: Never
+        image: europe-west3-docker.pkg.dev/micro-service-gruppe1/cse-microservice-boutique/giftwrappingservice:v1
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9600
         env:
