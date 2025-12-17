@@ -21,11 +21,9 @@ import io.grpc.ServerBuilder;
 import io.grpc.health.v1.HealthCheckResponse.ServingStatus;
 import io.grpc.protobuf.services.HealthStatusManager;
 import io.grpc.stub.StreamObserver;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public final class GiftWrappingService {
 
@@ -88,8 +86,7 @@ public final class GiftWrappingService {
         }
         logger.info("Stats enabled, but temporarily unavailable");
 
-        long sleepTime = 10; /* seconds */
-        int maxAttempts = 5;
+
 
         // TODO(arbrown) Implement OpenTelemetry stats
 

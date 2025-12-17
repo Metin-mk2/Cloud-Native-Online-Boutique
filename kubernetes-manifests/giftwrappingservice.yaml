@@ -44,7 +44,7 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         image: giftwrappingservice
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
         - containerPort: 9600
         env:
