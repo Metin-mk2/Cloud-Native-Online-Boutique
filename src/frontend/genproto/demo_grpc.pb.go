@@ -1179,14 +1179,14 @@ var AdService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	GiftWrappingService_GetGiftWrapping_FullMethodName = "/hipstershop.GiftWrappingService/GetGiftWrapping"
+	GiftWrappingService_GetGiftWrappingPrice_FullMethodName = "/hipstershop.GiftWrappingService/GetGiftWrappingPrice"
 )
 
 // GiftWrappingServiceClient is the client API for GiftWrappingService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GiftWrappingServiceClient interface {
-	GetGiftWrapping(ctx context.Context, in *GiftWrappingRequest, opts ...grpc.CallOption) (*Money, error)
+	GetGiftWrappingPrice(ctx context.Context, in *GiftWrappingPriceRequest, opts ...grpc.CallOption) (*Money, error)
 }
 
 type giftWrappingServiceClient struct {
@@ -1197,10 +1197,10 @@ func NewGiftWrappingServiceClient(cc grpc.ClientConnInterface) GiftWrappingServi
 	return &giftWrappingServiceClient{cc}
 }
 
-func (c *giftWrappingServiceClient) GetGiftWrapping(ctx context.Context, in *GiftWrappingRequest, opts ...grpc.CallOption) (*Money, error) {
+func (c *giftWrappingServiceClient) GetGiftWrappingPrice(ctx context.Context, in *GiftWrappingPriceRequest, opts ...grpc.CallOption) (*Money, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Money)
-	err := c.cc.Invoke(ctx, GiftWrappingService_GetGiftWrapping_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, GiftWrappingService_GetGiftWrappingPrice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1211,7 +1211,7 @@ func (c *giftWrappingServiceClient) GetGiftWrapping(ctx context.Context, in *Gif
 // All implementations must embed UnimplementedGiftWrappingServiceServer
 // for forward compatibility.
 type GiftWrappingServiceServer interface {
-	GetGiftWrapping(context.Context, *GiftWrappingRequest) (*Money, error)
+	GetGiftWrappingPrice(context.Context, *GiftWrappingPriceRequest) (*Money, error)
 	mustEmbedUnimplementedGiftWrappingServiceServer()
 }
 
@@ -1222,8 +1222,8 @@ type GiftWrappingServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedGiftWrappingServiceServer struct{}
 
-func (UnimplementedGiftWrappingServiceServer) GetGiftWrapping(context.Context, *GiftWrappingRequest) (*Money, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGiftWrapping not implemented")
+func (UnimplementedGiftWrappingServiceServer) GetGiftWrappingPrice(context.Context, *GiftWrappingPriceRequest) (*Money, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGiftWrappingPrice not implemented")
 }
 func (UnimplementedGiftWrappingServiceServer) mustEmbedUnimplementedGiftWrappingServiceServer() {}
 func (UnimplementedGiftWrappingServiceServer) testEmbeddedByValue()                             {}
@@ -1246,20 +1246,20 @@ func RegisterGiftWrappingServiceServer(s grpc.ServiceRegistrar, srv GiftWrapping
 	s.RegisterService(&GiftWrappingService_ServiceDesc, srv)
 }
 
-func _GiftWrappingService_GetGiftWrapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GiftWrappingRequest)
+func _GiftWrappingService_GetGiftWrappingPrice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GiftWrappingPriceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GiftWrappingServiceServer).GetGiftWrapping(ctx, in)
+		return srv.(GiftWrappingServiceServer).GetGiftWrappingPrice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GiftWrappingService_GetGiftWrapping_FullMethodName,
+		FullMethod: GiftWrappingService_GetGiftWrappingPrice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GiftWrappingServiceServer).GetGiftWrapping(ctx, req.(*GiftWrappingRequest))
+		return srv.(GiftWrappingServiceServer).GetGiftWrappingPrice(ctx, req.(*GiftWrappingPriceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1272,8 +1272,8 @@ var GiftWrappingService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*GiftWrappingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetGiftWrapping",
-			Handler:    _GiftWrappingService_GetGiftWrapping_Handler,
+			MethodName: "GetGiftWrappingPrice",
+			Handler:    _GiftWrappingService_GetGiftWrappingPrice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

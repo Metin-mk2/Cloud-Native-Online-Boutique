@@ -120,9 +120,9 @@ func (fe *frontendServer) getGiftWrappingPrice(ctx context.Context, quantity int
 	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
 	defer cancel()
 
-	resp, err := pb.NewGiftWrappingServiceClient(fe.giftWrappingSvcConn).GetGiftWrapping(ctx, &pb.GiftWrappingRequest{
+	resp, err := pb.NewGiftWrappingServiceClient(fe.giftWrappingSvcConn).GetGiftWrappingPrice(ctx, &pb.GiftWrappingPriceRequest{
 		Quantity:  quantity,
-		ProductId: productID,
+		ProductId: &productID,
 	})
 	return resp, errors.Wrap(err, "failed to get gift wrapping price")
 }

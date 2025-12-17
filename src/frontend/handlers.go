@@ -47,7 +47,7 @@ var (
 	isCymbalBrand    = "true" == strings.ToLower(os.Getenv("CYMBAL_BRANDING"))
 	assistantEnabled = "true" == strings.ToLower(os.Getenv("ENABLE_ASSISTANT"))
 	templates        = template.Must(template.New("").
-				Funcs(template.FuncMap{
+		Funcs(template.FuncMap{
 			"renderMoney":        renderMoney,
 			"renderCurrencyLogo": renderCurrencyLogo,
 		}).ParseGlob("templates/*.html"))
@@ -55,6 +55,9 @@ var (
 )
 
 var validEnvs = []string{"local", "gcp", "azure", "aws", "onprem", "alibaba"}
+
+//baseUrl + /
+//baseUrl + /cart
 
 func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
@@ -269,7 +272,7 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	// ignores the error retrieving recommendations since it is not critical
-	giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), Quantity(Product), ProductID(product))
+	//giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), cart, ProductID(product))
 	if err != nil {
 		log.WithField("error", err).Warn("failed to get gift wrapping price")
 	}
@@ -386,7 +389,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 
 	totalPaid := *order.GetOrder().GetShippingCost()
 	for _, v := range order.GetOrder().GetItems() {
-		itemPrice := *v.GetCost() + *v.GetGiftWrapPrice()
+		itemPrice := *v.GetCost() //+ *v.GetGiftWrapPrice()
 		multPrice := money.MultiplySlow(itemPrice, uint32(v.GetItem().GetQuantity()))
 		totalPaid = money.Must(money.Sum(totalPaid, multPrice))
 	}
@@ -640,4 +643,8 @@ func stringinSlice(slice []string, val string) bool {
 		}
 	}
 	return false
+}
+
+func (fe *frontendServer) giftWrappingHandler(w http.ResponseWriter, r *http.Request) {
+
 }

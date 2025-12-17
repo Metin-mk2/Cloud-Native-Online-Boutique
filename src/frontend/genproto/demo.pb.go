@@ -1716,29 +1716,28 @@ func (x *Ad) GetText() string {
 	return ""
 }
 
-type GiftWrappingRequest struct {
+type GiftWrappingPriceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Context       string                 `protobuf:"bytes,1,opt,name=context,proto3" json:"context,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	ProductId     string                 `protobuf:"bytes,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	ProductId     *string                `protobuf:"bytes,3,opt,name=product_id,json=productId,proto3,oneof" json:"product_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GiftWrappingRequest) Reset() {
-	*x = GiftWrappingRequest{}
+func (x *GiftWrappingPriceRequest) Reset() {
+	*x = GiftWrappingPriceRequest{}
 	mi := &file_demo_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GiftWrappingRequest) String() string {
+func (x *GiftWrappingPriceRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GiftWrappingRequest) ProtoMessage() {}
+func (*GiftWrappingPriceRequest) ProtoMessage() {}
 
-func (x *GiftWrappingRequest) ProtoReflect() protoreflect.Message {
+func (x *GiftWrappingPriceRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_demo_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1750,28 +1749,21 @@ func (x *GiftWrappingRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GiftWrappingRequest.ProtoReflect.Descriptor instead.
-func (*GiftWrappingRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GiftWrappingPriceRequest.ProtoReflect.Descriptor instead.
+func (*GiftWrappingPriceRequest) Descriptor() ([]byte, []int) {
 	return file_demo_proto_rawDescGZIP(), []int{32}
 }
 
-func (x *GiftWrappingRequest) GetContext() string {
-	if x != nil {
-		return x.Context
-	}
-	return ""
-}
-
-func (x *GiftWrappingRequest) GetQuantity() int32 {
+func (x *GiftWrappingPriceRequest) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
 	return 0
 }
 
-func (x *GiftWrappingRequest) GetProductId() string {
-	if x != nil {
-		return x.ProductId
+func (x *GiftWrappingPriceRequest) GetProductId() string {
+	if x != nil && x.ProductId != nil {
+		return *x.ProductId
 	}
 	return ""
 }
@@ -1886,12 +1878,12 @@ const file_demo_proto_rawDesc = "" +
 	"\x03ads\x18\x01 \x03(\v2\x0f.hipstershop.AdR\x03ads\";\n" +
 	"\x02Ad\x12!\n" +
 	"\fredirect_url\x18\x01 \x01(\tR\vredirectUrl\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\"j\n" +
-	"\x13GiftWrappingRequest\x12\x18\n" +
-	"\acontext\x18\x01 \x01(\tR\acontext\x12\x1a\n" +
-	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12\x1d\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"i\n" +
+	"\x18GiftWrappingPriceRequest\x12\x1a\n" +
+	"\bquantity\x18\x02 \x01(\x05R\bquantity\x12\"\n" +
 	"\n" +
-	"product_id\x18\x03 \x01(\tR\tproductId2\xca\x01\n" +
+	"product_id\x18\x03 \x01(\tH\x00R\tproductId\x88\x01\x01B\r\n" +
+	"\v_product_id2\xca\x01\n" +
 	"\vCartService\x12<\n" +
 	"\aAddItem\x12\x1b.hipstershop.AddItemRequest\x1a\x12.hipstershop.Empty\"\x00\x12;\n" +
 	"\aGetCart\x12\x1b.hipstershop.GetCartRequest\x1a\x11.hipstershop.Cart\"\x00\x12@\n" +
@@ -1917,9 +1909,9 @@ const file_demo_proto_rawDesc = "" +
 	"\n" +
 	"PlaceOrder\x12\x1e.hipstershop.PlaceOrderRequest\x1a\x1f.hipstershop.PlaceOrderResponse\"\x002H\n" +
 	"\tAdService\x12;\n" +
-	"\x06GetAds\x12\x16.hipstershop.AdRequest\x1a\x17.hipstershop.AdResponse\"\x002`\n" +
-	"\x13GiftWrappingService\x12I\n" +
-	"\x0fGetGiftWrapping\x12 .hipstershop.GiftWrappingRequest\x1a\x12.hipstershop.Money\"\x00B?Z=github.com/GoogleCloudPlatform/microservices-demo/hipstershopb\x06proto3"
+	"\x06GetAds\x12\x16.hipstershop.AdRequest\x1a\x17.hipstershop.AdResponse\"\x002j\n" +
+	"\x13GiftWrappingService\x12S\n" +
+	"\x14GetGiftWrappingPrice\x12%.hipstershop.GiftWrappingPriceRequest\x1a\x12.hipstershop.Money\"\x00B?Z=github.com/GoogleCloudPlatform/microservices-demo/hipstershopb\x06proto3"
 
 var (
 	file_demo_proto_rawDescOnce sync.Once
@@ -1967,7 +1959,7 @@ var file_demo_proto_goTypes = []any{
 	(*AdRequest)(nil),                      // 29: hipstershop.AdRequest
 	(*AdResponse)(nil),                     // 30: hipstershop.AdResponse
 	(*Ad)(nil),                             // 31: hipstershop.Ad
-	(*GiftWrappingRequest)(nil),            // 32: hipstershop.GiftWrappingRequest
+	(*GiftWrappingPriceRequest)(nil),       // 32: hipstershop.GiftWrappingPriceRequest
 }
 var file_demo_proto_depIdxs = []int32{
 	0,  // 0: hipstershop.AddItemRequest.item:type_name -> hipstershop.CartItem
@@ -2008,7 +2000,7 @@ var file_demo_proto_depIdxs = []int32{
 	26, // 35: hipstershop.EmailService.SendOrderConfirmation:input_type -> hipstershop.SendOrderConfirmationRequest
 	27, // 36: hipstershop.CheckoutService.PlaceOrder:input_type -> hipstershop.PlaceOrderRequest
 	29, // 37: hipstershop.AdService.GetAds:input_type -> hipstershop.AdRequest
-	32, // 38: hipstershop.GiftWrappingService.GetGiftWrapping:input_type -> hipstershop.GiftWrappingRequest
+	32, // 38: hipstershop.GiftWrappingService.GetGiftWrappingPrice:input_type -> hipstershop.GiftWrappingPriceRequest
 	5,  // 39: hipstershop.CartService.AddItem:output_type -> hipstershop.Empty
 	4,  // 40: hipstershop.CartService.GetCart:output_type -> hipstershop.Cart
 	5,  // 41: hipstershop.CartService.EmptyCart:output_type -> hipstershop.Empty
@@ -2024,7 +2016,7 @@ var file_demo_proto_depIdxs = []int32{
 	5,  // 51: hipstershop.EmailService.SendOrderConfirmation:output_type -> hipstershop.Empty
 	28, // 52: hipstershop.CheckoutService.PlaceOrder:output_type -> hipstershop.PlaceOrderResponse
 	30, // 53: hipstershop.AdService.GetAds:output_type -> hipstershop.AdResponse
-	18, // 54: hipstershop.GiftWrappingService.GetGiftWrapping:output_type -> hipstershop.Money
+	18, // 54: hipstershop.GiftWrappingService.GetGiftWrappingPrice:output_type -> hipstershop.Money
 	39, // [39:55] is the sub-list for method output_type
 	23, // [23:39] is the sub-list for method input_type
 	23, // [23:23] is the sub-list for extension type_name
@@ -2037,6 +2029,7 @@ func file_demo_proto_init() {
 	if File_demo_proto != nil {
 		return
 	}
+	file_demo_proto_msgTypes[32].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
