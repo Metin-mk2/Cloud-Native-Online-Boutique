@@ -130,9 +130,10 @@ public final class GiftWrappingService {
               public void getGiftWrappingPrice(GiftWrappingPriceRequest request, StreamObserver<Money> responseObserver) {
               // TODO Auto-generated method stub
               //example response
-              //Sollte 5€ zurückgeben
+              //Sollte Quantity * 5€ zurückgeben
+                int units = request.getQuantity() * 5;
               Money giftwrapping = Money.newBuilder()
-                .setUnits(5)
+                .setUnits(units)
                 .setNanos(100_000_000)
                 .setCurrencyCode("EUR").build();
               responseObserver.onNext(giftwrapping);
