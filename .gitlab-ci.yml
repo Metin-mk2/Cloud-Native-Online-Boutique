@@ -1,0 +1,29 @@
+stages:
+  - test
+
+variables:
+  GO_VERSION: "1.22"
+
+.default_go_job:
+  image: golang:${GO_VERSION}
+  before_script:
+    - go version
+
+unit-tests:
+  stage: test
+  extends: .default_go_job
+  script:
+    - |
+      set -e
+      for d in src/*; do
+        if [ -f "$d/go.mod" ]; then
+          echo "Running tests in $d"
+          cd $d
+          go test ./...
+          cd -
+        fi
+      done
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
