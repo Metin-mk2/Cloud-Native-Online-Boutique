@@ -2,7 +2,7 @@ stages:
   - test
 
 variables:
-  GO_VERSION: "1.22"
+  GO_VERSION: "1.25"
 
 .default_go_job:
   image: golang:${GO_VERSION}
