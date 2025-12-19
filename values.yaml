@@ -1,0 +1,9 @@
+gitlabUrl: https://git.tu-berlin.de/          # Your GitLab instance
+runnerRegistrationToken: glrt-f4jxD0jcFCtDGGiiEPYj1G86MQpwOjE1cXQKdDozCnU6MnVuFA.01.1e12plvih # Get from GitLab → Settings → CI/CD → Runners → New project runner
+rbac:
+  create: true
+runners:
+  privileged: true     # Needed if you want to run Docker-in-Docker builds
+  image: golang:1.25   # Default image for builds
+  tags: ["gke"]       # Optional tag to match jobs in your .gitlab-ci.yml
+
