@@ -41,11 +41,11 @@ unit-tests:
 # -------------------------
 deploy-production:
   stage: deploy
-  image: google/cloud-sdk:alpine
+  image: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
   tags:
     - cse-gr1-runner
   rules:
-    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_TAG'    # Only run on git tags
   script:
     - echo "Deploying tag $CI_COMMIT_TAG"
 
@@ -54,12 +54,11 @@ deploy-production:
     - gcloud auth activate-service-account --key-file=gcp-key.json
     - gcloud config set project $GCP_PROJECT
 
-    # Get cluster credentials
+    # Get GKE credentials
     - gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GCP_PROJECT --quiet
 
-    # Deploy manifests
+    # Deploy Kubernetes manifests
     - kubectl apply -f release/kubernetes-manifests.yaml
 
   environment:
     name: production
-
