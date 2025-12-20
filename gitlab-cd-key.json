@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cse-gr1",
+  "private_key_id": "287436261911a16249697a9f4dd831def528e1fc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCfeba9MzjG1hkE\nl/xPhvR3aIKsbBJjy8BuhouvXSVqcP/kibLO2hddlB2ObP58R+m6gtj6hIqaxQee\nykAKhC8ptqqkRcJRvk5DSGg/LUMKnxZ/E4SS59NYGIKglsMcwPpMStjWnneJvRNn\nsZLv6EqWKnFcoR8KZ94i/DnVUXQV2uIWEFyJiz/mEQiiAGSouQ42erkSNO5v4qTd\nyVMbggDfVA48xhjhEfoYYkJKtyRwpTLeNUcgRbG3uhbwfVHr46Z/Ny44dZnbseER\nB//7+QzCyMlVCrZVjg62P+KuuV7ZzG6LlskDQsdI70DKIDjUDo8BOhEtUWCjRdCR\n1dWRsRyrAgMBAAECggEAGfj3L4ozkYKV8X8VSxh2ISpmudEiD5nD/dwwzL81VEgS\nDPT2J6UyT/3K8ILE0ZXetY8Q6oACmOFE8/IJiwzrJ3aGBRoNY0XEtkWJINzswcKW\nJd0WZtyVuY/IWoIjRcASI7G+7flCC689BVLQ1Py2hQ1liAn/pbCz52u/uYO6DcLl\nvWo7J5jhRM4fsBejzIP/w/rXA3TJ6FNB9WFaIesWqE5enbXgN0skhM0V+huo3uKj\nwjWnTcwLjmqyS4KdLXA661tY5TjRFPhYy6xn7eSyUb9HY+kG+E7ihqMmAQoTBFmk\nLd2m9xPT+I0G6CZ/zRbahx6VthjyvWvqoM29P6qc2QKBgQDYiR1dzgZf6xXoexBA\nyTBHwM/apgpNtpzQifu27C+RiU9fKMqyHgcG8Drv2yTls8uJ9FxTlMdvdV+5KOPt\nDIBYpAevb9FoJvd+C+f6EBZloa4HRHyQ+LT9Rp/3O6m0KvCZr3HYGTA3RlPZK8mr\ngRFO3Lv1JjTHOxxftjUQfB9vCQKBgQC8ilj53iPZKhC8ZRMKVnqbBiLpfw8lC1H7\nmVCvkefSRnCLb1oI2JKHCRQ5PD2p7IgMdAyN0LRZAnCbZCk8xOAHE1CvFk9/Q/Ep\nTO4lBba7XJiXFGUQKgo6hWwrY1NNUx0a3vRdP1fE4A6m5dCG7h5AJ7pTtCgzIKXf\nN8rKKMWnEwKBgAzXvQ0mPgyMVeVO/zzIcfuffPR76pqHXS+lL2++/GdGXJXJRpRf\n4YzQzL4TIlIZYtYQzzUJ2vZKYN4LhdE2b5pSSD5ohGQIA5/PNvgG4j0u5LJ7pmO2\nzI1FFhHE0SDldxW2aSsm+0wb+LcluLVaV1t1DhTRKkoywFEQ7n7Gzdp5AoGATXq9\nHdHAAZpbzk/rBzCKqfJXnoTsgFiqlC5pDf1zuuHfli1oXoJBlOSSPwMWhCIDtrpp\n/k1qD7oE9Jawq5xsQ/wYCBuvB6mwDTzkEKrMcSqYOl3TOlVMZsg1r47dyMUDDOva\nmAdT1kANRWDj1M899zdcRtGeQ4SDJbwTxggDUakCgYACfgLCFmhH76SbnSthMffs\nZV56cEXtjIjpQXsVJhIedBxOaqpJqvl9A3J4qDQb0rdDj9fRIIAJQU2yqVXr4kIU\nuRdxVX0six6abJQCoYBWv0Y9SAAjqQwQcAUMHwa73jqbtnNSsIvkfccngex34mXV\nKbqKeLahDElGLeWr+Ht3DA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gitlab-cd@cse-gr1.iam.gserviceaccount.com",
+  "client_id": "114251793778155017596",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gitlab-cd%40cse-gr1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
