@@ -12,6 +12,8 @@ variables:
 unit-tests:
   stage: test
   extends: .default_go_job
+  tags:
+    - cse-gr1-runner
   script:
     - |
       set -e
