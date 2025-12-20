@@ -41,7 +41,7 @@ unit-tests:
 # -------------------------
 deploy-production:
   stage: deploy
-  image: gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
+  image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest 
   tags:
     - cse-gr1-runner
   rules:
