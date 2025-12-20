@@ -54,9 +54,6 @@ deploy-production:
     - gcloud auth activate-service-account --key-file=gcp-key.json
     - gcloud config set project $GCP_PROJECT
 
-    # Enable APIs (optional if not already enabled)
-    - gcloud services enable container.googleapis.com --project $GCP_PROJECT
-
     # Get cluster credentials
     - gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GCP_PROJECT --quiet
 
