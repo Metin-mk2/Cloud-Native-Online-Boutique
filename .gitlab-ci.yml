@@ -54,15 +54,13 @@ deploy-production:
     - gcloud auth activate-service-account --key-file=gcp-key.json
     - gcloud config set project $GCP_PROJECT
 
+    # Enable APIs (optional if not already enabled)
+    - gcloud services enable container.googleapis.com --project $GCP_PROJECT
+
     # Get cluster credentials
-    - gcloud container clusters get-credentials $GKE_CLUSTER \
-        --zone $GKE_ZONE \
-        --project $GCP_PROJECT
+    - gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GCP_PROJECT --quiet
 
-    # (Optional but recommended) pin image versions to tag
-    # - sed -i "s/:latest/:$CI_COMMIT_TAG/g" release/kubernetes-manifests.yaml
-
-    # Deploy
+    # Deploy manifests
     - kubectl apply -f release/kubernetes-manifests.yaml
 
   environment:
