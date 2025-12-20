@@ -13,9 +13,6 @@ variables:
   before_script:
     - go version
 
-# -------------------------
-# Unit tests
-# -------------------------
 unit-tests:
   stage: test
   extends: .default_go_job
@@ -36,29 +33,20 @@ unit-tests:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
 
-# -------------------------
-# Deploy to GKE on git tag
-# -------------------------
 deploy-production:
   stage: deploy
-  image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest 
+  image: gcr.io/k8s-skaffold/skaffold:v2.16.1
   tags:
     - cse-gr1-runner
   rules:
-    - if: '$CI_COMMIT_TAG'    # Only run on git tags
+    - if: '$CI_COMMIT_TAG'
   script:
     - echo "Deploying tag $CI_COMMIT_TAG"
-
-    # Authenticate to GCP
     - echo "$GCP_SERVICE_KEY" | base64 -d > gcp-key.json
     - gcloud auth activate-service-account --key-file=gcp-key.json
     - gcloud config set project $GCP_PROJECT
-
-    # Get GKE credentials
     - gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GCP_PROJECT --quiet
-
-    # Deploy Kubernetes manifests
-    - kubectl apply -f release/kubernetes-manifests.yaml
-
+    - skaffold run --default-repo=gcr.io/$GCP_PROJECT
   environment:
     name: production
+
