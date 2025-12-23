@@ -56,6 +56,9 @@ var (
 
 var validEnvs = []string{"local", "gcp", "azure", "aws", "onprem", "alibaba"}
 
+//baseUrl + /
+//baseUrl + /cart
+
 func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
 	log.WithField("currency", currentCurrency(r)).Info("home")
@@ -232,7 +235,7 @@ func (fe *frontendServer) addToCartHandler(w http.ResponseWriter, r *http.Reques
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to add to cart"), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("location", baseUrl + "/cart")
+	w.Header().Set("location", baseUrl+"/cart")
 	w.WriteHeader(http.StatusFound)
 }
 
@@ -244,7 +247,7 @@ func (fe *frontendServer) emptyCartHandler(w http.ResponseWriter, r *http.Reques
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to empty cart"), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("location", baseUrl + "/")
+	w.Header().Set("location", baseUrl+"/")
 	w.WriteHeader(http.StatusFound)
 }
 
@@ -275,9 +278,11 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	type cartItemView struct {
-		Item     *pb.Product
-		Quantity int32
-		Price    *pb.Money
+		Item                *pb.Product
+		Quantity            int32
+		Price               *pb.Money
+		GiftWrappingApplied bool
+		GiftWrappingPrice   *pb.Money
 	}
 	items := make([]cartItemView, len(cart))
 	totalPrice := pb.Money{CurrencyCode: currentCurrency(r)}
@@ -293,11 +298,20 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 			return
 		}
 
+		// ignores the error retrieving recommendations since it is not critical
+		giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), item.GetQuantity(), item.GetProductId())
+		if err != nil {
+			log.WithField("error", err).Warn("failed to get gift wrapping price")
+		}
+
 		multPrice := money.MultiplySlow(*price, uint32(item.GetQuantity()))
 		items[i] = cartItemView{
-			Item:     p,
-			Quantity: item.GetQuantity(),
-			Price:    &multPrice}
+			Item:                p,
+			Quantity:            item.GetQuantity(),
+			Price:               &multPrice,
+			GiftWrappingApplied: false,
+			GiftWrappingPrice:   giftWrappingPrice,
+		}
 		totalPrice = money.Must(money.Sum(totalPrice, multPrice))
 	}
 	totalPrice = money.Must(money.Sum(totalPrice, *shippingCost))
@@ -379,7 +393,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 
 	totalPaid := *order.GetOrder().GetShippingCost()
 	for _, v := range order.GetOrder().GetItems() {
-		multPrice := money.MultiplySlow(*v.GetCost(), uint32(v.GetItem().GetQuantity()))
+		itemPrice := *v.GetCost() //+ *v.GetGiftWrapPrice()
+		multPrice := money.MultiplySlow(itemPrice, uint32(v.GetItem().GetQuantity()))
 		totalPaid = money.Must(money.Sum(totalPaid, multPrice))
 	}
 
@@ -423,7 +438,7 @@ func (fe *frontendServer) logoutHandler(w http.ResponseWriter, r *http.Request) 
 		c.MaxAge = -1
 		http.SetCookie(w, c)
 	}
-	w.Header().Set("Location", baseUrl + "/")
+	w.Header().Set("Location", baseUrl+"/")
 	w.WriteHeader(http.StatusFound)
 }
 
@@ -632,4 +647,8 @@ func stringinSlice(slice []string, val string) bool {
 		}
 	}
 	return false
+}
+
+func (fe *frontendServer) giftWrappingHandler(w http.ResponseWriter, r *http.Request) {
+
 }

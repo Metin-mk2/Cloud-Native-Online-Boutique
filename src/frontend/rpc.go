@@ -116,6 +116,17 @@ func (fe *frontendServer) getRecommendations(ctx context.Context, userID string,
 	return out, err
 }
 
+func (fe *frontendServer) getGiftWrappingPrice(ctx context.Context, quantity int32, productID string) (*pb.Money, error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
+
+	resp, err := pb.NewGiftWrappingServiceClient(fe.giftWrappingSvcConn).GetGiftWrappingPrice(ctx, &pb.GiftWrappingPriceRequest{
+		Quantity:  quantity,
+		ProductId: &productID,
+	})
+	return resp, errors.Wrap(err, "failed to get gift wrapping price")
+}
+
 func (fe *frontendServer) getAd(ctx context.Context, ctxKeys []string) ([]*pb.Ad, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
 	defer cancel()

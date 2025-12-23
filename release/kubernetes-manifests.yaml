@@ -766,6 +766,8 @@ spec:
             value: "checkoutservice:5050"
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
+          - name: GIFT_WRAPPING_SERVICE_ADDR
+            value: "giftwrappingservice:9600"
           - name: SHOPPING_ASSISTANT_SERVICE_ADDR
             value: "shoppingassistantservice:80"
           # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
@@ -977,4 +979,79 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: adservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: giftwrappingservice
+  labels:
+    app: giftwrappingservice
+spec:
+  selector:
+    matchLabels:
+      app: giftwrappingservice
+  template:
+    metadata:
+      labels:
+        app: giftwrappingservice
+    spec:
+      serviceAccountName: giftwrappingservice
+      terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: server
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: europe-west3-docker.pkg.dev/micro-service-gruppe1/cse-microservice-boutique/giftwrappingservice:v1
+        ports:
+        - containerPort: 9600
+        env:
+        - name: PORT
+          value: "9600"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 180Mi
+          limits:
+            cpu: 300m
+            memory: 300Mi
+        readinessProbe:
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          grpc:
+            port: 9600
+        livenessProbe:
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          grpc:
+            port: 9600
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: giftwrappingservice
+  labels:
+    app: giftwrappingservice
+spec:
+  type: ClusterIP
+  selector:
+    app: giftwrappingservice
+  ports:
+  - name: grpc
+    port: 9555
+    targetPort: 9555
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: giftwrappingservice
 # [END gke_release_kubernetes_manifests_microservices_demo]
