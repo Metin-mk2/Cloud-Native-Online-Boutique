@@ -74,6 +74,17 @@ func (fe *frontendServer) insertCart(ctx context.Context, userID, productID stri
 	return err
 }
 
+func (fe *frontendServer) updateCart(ctx context.Context, userID, productID string, quantity int32, giftWrappingConfig *pb.GiftWrappingConfig) error {
+	_, err := pb.NewCartServiceClient(fe.cartSvcConn).UpdateItem(ctx, &pb.UpdateItemRequest{
+		UserId: userID,
+		Item: &pb.CartItem{
+			ProductId:          productID,
+			Quantity:           quantity,
+			GiftWrappingConfig: giftWrappingConfig},
+	})
+	return err
+}
+
 func (fe *frontendServer) convertCurrency(ctx context.Context, money *pb.Money, currency string) (*pb.Money, error) {
 	if avoidNoopCurrencyConversionRPC && money.GetCurrencyCode() == currency {
 		return money, nil
@@ -125,6 +136,14 @@ func (fe *frontendServer) getGiftWrappingPrice(ctx context.Context, quantity int
 		ProductId: &productID,
 	})
 	return resp, errors.Wrap(err, "failed to get gift wrapping price")
+}
+
+func (fe *frontendServer) getGiftWrappingOptions(ctx context.Context) ([]*pb.GiftWrappingOption, error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
+
+	resp, err := pb.NewGiftWrappingServiceClient(fe.giftWrappingSvcConn).GetGiftWrappingOptions(ctx, &pb.GiftWrappingOptionsRequest{})
+	return resp.GetOptions(), errors.Wrap(err, "failed to get gift wrapping options")
 }
 
 func (fe *frontendServer) getAd(ctx context.Context, ctxKeys []string) ([]*pb.Ad, error) {

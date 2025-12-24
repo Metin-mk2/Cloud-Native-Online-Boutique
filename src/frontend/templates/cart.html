@@ -81,17 +81,28 @@
                                     </strong>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="checkbox" />
-                                    Apply Gift Wrapping
+                            <form method="POST" action="{{ $.baseUrl }}/giftwrapping/confirm">
+                                <div class="row">
+                                    <div class="col cymbal-form-field">
+                                        <label for="gift_wrapping_{{.Item.Id}}">Gift Wrapping</label>
+                                        <select name="gift_wrapping_{{.Item.Id}}" id="gift_wrapping_{{.Item.Id}}">
+                                            <option>No gift wrapping</option>
+                                            {{ range $.gift_wrapping_options }}
+                                            <option value="{{.Id}}"
+
+                                                {{if eq .Id $.GiftWrappingConfig.Id}}selected="selected"{{end}}>
+                                                {{.Name}} - {{ renderMoney .Price }}
+                                            </option>
+                                            {{ end }}
+                                        </select>
+                                    </div>
+                                    <div class="col pr-md-0 text-right">
+                                        <strong>
+                                            {{ renderMoney .GiftWrappingPrice }}
+                                        </strong>
+                                    </div>
                                 </div>
-                                <div class="col pr-md-0 text-right">
-                                    <strong>
-                                        {{ renderMoney .GiftWrappingPrice }}
-                                    </strong>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     {{ end }}

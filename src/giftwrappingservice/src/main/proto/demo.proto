@@ -24,6 +24,7 @@ package giftwrappingservice;
 
 service GiftWrappingService {
     rpc GetGiftWrappingPrice(GiftWrappingPriceRequest) returns (Money) {}
+    rpc GetGiftWrappingOptions(GiftWrappingOptionsRequest) returns (GiftWrappingOptionsReponse) {}
 }
 
 message GiftWrappingPriceRequest {
@@ -31,6 +32,20 @@ message GiftWrappingPriceRequest {
     optional string product_id = 3;
 }
 
+message GiftWrappingOptionsRequest {
+    
+}
+
+message GiftWrappingOptionsReponse {
+    repeated GiftWrappingOption options = 1;
+}
+
+message GiftWrappingOption {
+    string gift_wrapping_id = 1;
+    Money  price_usd = 2;
+    string picture = 3;
+    string name = 4;
+}
 
 // Represents an amount of money with its currency type.
 message Money {

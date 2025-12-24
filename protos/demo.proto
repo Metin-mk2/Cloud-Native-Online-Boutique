@@ -29,6 +29,12 @@ service CartService {
 message CartItem {
     string product_id = 1;
     int32  quantity = 2;
+    optional GiftWrappingConfig gift_wrapping_config = 3;
+}
+
+message GiftWrappingConfig {
+    string  gift_wrapping_id = 1;
+    bool    gift_wrapping_applied = 2;
 }
 
 message AddItemRequest {
@@ -38,6 +44,11 @@ message AddItemRequest {
 
 message EmptyCartRequest {
     string user_id = 1;
+}
+
+message UpdateCartRequest {
+    string user_id = 1;
+    CartItem item = 2;
 }
 
 message GetCartRequest {
@@ -272,4 +283,18 @@ message GiftWrappingPriceRequest {
     optional string product_id = 3;
 }
 
+message GiftWrappingOptionsRequest {
+    
+}
+
+message GiftWrappingOptionsReponse {
+    repeated GiftWrappingOption options = 1;
+}
+
+message GiftWrappingOption {
+    string gift_wrapping_id = 1;
+    Money  price_usd = 2;
+    string picture = 3;
+    string name = 4;
+}
 

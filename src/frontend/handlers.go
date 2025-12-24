@@ -277,12 +277,17 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	giftWrappingOptions, err := fe.getGiftWrappingOptions(r.Context())
+	if err != nil {
+		renderHTTPError(log, r, w, errors.Wrap(err, "could not retrieve gift wrapping options"), http.StatusInternalServerError)
+		return
+	}
+
 	type cartItemView struct {
-		Item                *pb.Product
-		Quantity            int32
-		Price               *pb.Money
-		GiftWrappingApplied bool
-		GiftWrappingPrice   *pb.Money
+		Item               *pb.Product
+		Quantity           int32
+		Price              *pb.Money
+		GiftWrappingConfig *pb.GiftWrappingConfig
 	}
 	items := make([]cartItemView, len(cart))
 	totalPrice := pb.Money{CurrencyCode: currentCurrency(r)}
@@ -299,18 +304,20 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 		}
 
 		// ignores the error retrieving recommendations since it is not critical
-		giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), item.GetQuantity(), item.GetProductId())
-		if err != nil {
-			log.WithField("error", err).Warn("failed to get gift wrapping price")
-		}
+		//giftWrappingPrice, err := fe.getGiftWrappingPrice(r.Context(), item.GetQuantity(), item.GetProductId())
+		//if err != nil {
+		//	log.WithField("error", err).Warn("failed to get gift wrapping price")
+		//}
 
 		multPrice := money.MultiplySlow(*price, uint32(item.GetQuantity()))
 		items[i] = cartItemView{
-			Item:                p,
-			Quantity:            item.GetQuantity(),
-			Price:               &multPrice,
-			GiftWrappingApplied: false,
-			GiftWrappingPrice:   giftWrappingPrice,
+			Item:     p,
+			Quantity: item.GetQuantity(),
+			Price:    &multPrice,
+			GiftWrappingConfig: &pb.GiftWrappingConfig{
+				GiftWrappingId:      "",
+				GiftWrappingApplied: false,
+			},
 		}
 		totalPrice = money.Must(money.Sum(totalPrice, multPrice))
 	}
@@ -318,17 +325,37 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 	year := time.Now().Year()
 
 	if err := templates.ExecuteTemplate(w, "cart", injectCommonTemplateData(r, map[string]interface{}{
-		"currencies":       currencies,
-		"recommendations":  recommendations,
-		"cart_size":        cartSize(cart),
-		"shipping_cost":    shippingCost,
-		"show_currency":    true,
-		"total_cost":       totalPrice,
-		"items":            items,
-		"expiration_years": []int{year, year + 1, year + 2, year + 3, year + 4},
+		"currencies":            currencies,
+		"recommendations":       recommendations,
+		"cart_size":             cartSize(cart),
+		"shipping_cost":         shippingCost,
+		"show_currency":         true,
+		"total_cost":            totalPrice,
+		"items":                 items,
+		"gift_wrapping_options": giftWrappingOptions,
+		"expiration_years":      []int{year, year + 1, year + 2, year + 3, year + 4},
 	})); err != nil {
 		log.Println(err)
 	}
+}
+
+func (fe *frontendServer) confirmGiftWrappingHandler(w http.ResponseWriter, r *http.Request) {
+	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
+	log.Debug("confirming gift wrapping selection")
+	var (
+		productID          = r.FormValue("product_id")
+		giftWrappingConfig = &pb.GiftWrappingConfig{
+			GiftWrappingId:      r.FormValue("gift_wrapping_id"),
+			GiftWrappingApplied: true,
+		}
+		quantity, _ = strconv.ParseInt(r.FormValue("quantity"), 10, 32)
+	)
+
+	if err := fe.updateCart(r.Context(), sessionID(r), productID, int32(quantity), giftWrappingConfig); err != nil {
+		renderHTTPError(log, r, w, errors.Wrap(err, "failed to update cart item"), http.StatusInternalServerError)
+		return
+	}
+
 }
 
 func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Request) {
