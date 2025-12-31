@@ -33,7 +33,6 @@ message GiftWrappingPriceRequest {
 }
 
 message GiftWrappingOptionsRequest {
-    
 }
 
 message GiftWrappingOptionsReponse {
@@ -41,10 +40,11 @@ message GiftWrappingOptionsReponse {
 }
 
 message GiftWrappingOption {
-    string gift_wrapping_id = 1;
-    Money  price_usd = 2;
-    string picture = 3;
-    string name = 4;
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string picture = 4;
+  Money price_usd = 5;
 }
 
 // Represents an amount of money with its currency type.
